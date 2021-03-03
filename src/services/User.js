@@ -33,8 +33,8 @@ const User = {
   },
   
   verifyPassword: async function(email, givenPassword) {
-    const user = await User.findByEmail(email)
-
+    const user = await connection('users').where({ email }).first()
+    
     if (!user)
       return { error: 'User not found' }
 
