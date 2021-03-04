@@ -4,7 +4,7 @@ const connection = require('../database/connection')
 const BCRYPT_SALT_ROUNDS = 10
 
 const User = {
-  findById: function(id) {
+  findById: async function(id) {
     const user = await connection('users').where({ id }).first()
       
     return user
