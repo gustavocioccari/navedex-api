@@ -19,10 +19,10 @@ const User = {
   create: async function(userData) {
     const { email, password } = userData
 
-    const userExists = await connection('users').where({ email }).first()
+    const userNotExists = await User.findByEmail(email)
     
-    if (userExists)
-      return { error: 'User already exists' }
+    if (userNotExists)
+      return 
     
     const hash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
     const user = await connection('users').insert({email, password:hash})
@@ -33,13 +33,13 @@ const User = {
   },
   
   verifyPassword: async function(email, givenPassword) {
-    const user = await connection('users').where({ email }).first()
+    const user = await User.findByEmail(email)
     
     if (!user)
       return { error: 'User not found' }
-
+    
     if (!await bcrypt.compare(givenPassword, user.password)) 
-      return { error: 'Invalid password' }
+      return false
 
     user.password=undefined
 
