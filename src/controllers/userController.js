@@ -1,15 +1,5 @@
-const jwt = require('jsonwebtoken')
 const User = require('../services/User')
-
-const authConfig = require('../config/auth.json')
-
-function generateToken(params = {}){
-  return jwt.sign(
-    params,
-    authConfig.secret,
-    { expiresIn:authConfig.expiresIn }
-  )
-}
+const Auth = require('../services/Auth')
 
 module.exports = {
 
@@ -17,7 +7,7 @@ module.exports = {
     try{
       const user = await User.create(req.body)
 
-      const token = generateToken({ id:user.id })
+      const token = Auth.generateToken({ id:user.id })
 
       return res.send({
         user,
