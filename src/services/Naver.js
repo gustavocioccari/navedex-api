@@ -8,13 +8,11 @@ const Naver = {
   },
 
   filterBy: async function(query){
-    if (Naver.findById(id)){
-      const navers = await connection('navers')
-        .select('id','name','birthdate','admissiondate','job_role')
-        .where(query)
-      return navers
-    }
-    return { error:'Naver not found' }
+    const navers = await connection('navers')
+      .select('id','name','birthdate','admissiondate','job_role')
+      .where(query)
+      
+    return navers
   },
 
   create: async function(naverData){
