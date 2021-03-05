@@ -13,10 +13,12 @@ routes.get('/',(req, res) => {
 })
 
 routes.post('/user', userController.create)
+
 routes.post('/auth', authController.auth)
 
 routes.use(authMiddleware)
 
 routes.post('/naver', naverController.create)
+routes.get('/naver', naverController.index)
 
 module.exports = routes
