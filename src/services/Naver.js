@@ -39,3 +39,5 @@ const Naver = {
     return { error:'Naver not found' }
   }
 }
+
+module.exports = Naver
