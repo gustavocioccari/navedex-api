@@ -33,8 +33,8 @@ const Naver = {
   },
 
   updateById: async function(id,updateData){
-    const naverupdate = await connection('navers').update(updateData).where({ id })
-    console.log(!naverupdate)
+    await connection('navers').update(updateData).where({ id })
+    
     const naver = await Naver.findById(id)
     
     return naver
