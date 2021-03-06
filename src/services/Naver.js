@@ -9,7 +9,12 @@ const Naver = {
 
   filterBy: async function(query){
     const navers = await connection('navers')
-      .select('id','name','birthdate','admissiondate','job_role')
+      .select('id',
+              'name',
+              'birthdate',
+              'admissiondate',
+              'job_role'
+            )
       .where(query)
       
     return navers
@@ -21,20 +26,18 @@ const Naver = {
     return naver
   },
 
-  deleteById: async function(id){
-    if (Naver.findById(id)){
-      await connection('navers').where({ id }).del()
-      return { message:'Naver deleted successfully' }
-    }
-    return { error:'Naver not found' }
+  deleteById: async function(id){   
+    const naverdelete = await connection('navers').where({ id }).del()
+
+    return naverdelete
   },
 
   updateById: async function(id,updateData){
-    if (Naver.findById(id)){
-      const naver = await connection('navers').where({ id }).update(updateData)
-      return naver
-    }
-    return { error:'Naver not found' }
+    const naverupdate = await connection('navers').update(updateData).where({ id })
+    console.log(!naverupdate)
+    const naver = await Naver.findById(id)
+    
+    return naver
   }
 }
 
