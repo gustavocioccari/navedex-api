@@ -20,5 +20,7 @@ routes.use(authMiddleware)
 
 routes.post('/naver', naverController.create)
 routes.get('/naver', naverController.index)
+routes.delete('/naver/:id', naverController.delete)
+routes.patch('/naver/:id', naverController.update)
 
 module.exports = routes
