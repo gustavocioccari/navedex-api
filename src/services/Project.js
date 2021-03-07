@@ -69,6 +69,17 @@ const Project = {
     const project = await Project.findById(id)
       
     return project
+  },
+
+  getNavers: async function(id){
+    const project = await connection('projects').where({ id })
+    const navers = await connection
+                            .select('navers.id','navers.name','navers.birthdate','navers.admissiondate','navers.job_role')
+                            .from('navers')
+                            .join('navers_projects','navers.id','=','navers_projects.naver_id')
+                            .where({ project_id:id })
+    
+    return {...project,navers}
   }
 }
 

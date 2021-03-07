@@ -38,6 +38,17 @@ const Naver = {
     const naver = await Naver.findById(id)
     
     return naver
+  },
+
+  getProjects: async function(id){
+    const naver = await connection('navers').where({ id })
+    const projects = await connection
+                            .select('projects.id','projects.name')
+                            .from('projects')
+                            .join('navers_projects','projects.id','=','navers_projects.project_id')
+                            .where({ naver_id:id })
+    
+    return {...naver,projects}
   }
 }
 
