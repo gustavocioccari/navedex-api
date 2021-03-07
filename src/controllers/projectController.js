@@ -51,5 +51,18 @@ module.exports = {
         return res.status(400).send({ error: 'project delete failed' }),
         console.log(err)
     }
+  },
+
+  async show(req,res) {
+    const { id } = req.params
+    
+    try{
+      const navers = await Project.getNavers(id)
+
+      return res.status(200).send(navers)
+    } catch (err) {
+        return res.status(400).send({ error: 'Show project failed' }),
+        console.log(err)
+    }   
   }
 }
