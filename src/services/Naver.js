@@ -21,7 +21,11 @@ const Naver = {
   },
 
   create: async function(naverData){
-    const naver = await connection('navers').insert(naverData)
+    const naverinsert = await connection('navers').insert(naverData)
+
+    const naverId = naverinsert[0]
+
+    const naver = await Naver.findById(naverId)
 
     return naver
   },

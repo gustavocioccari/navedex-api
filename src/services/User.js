@@ -25,8 +25,11 @@ const User = {
       return 
     
     const hash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
-    const user = await connection('users').insert({email, password:hash})
+    
+    const userinsert = await connection('users').insert({email, password:hash})
+    const userId = userinsert[0]
 
+    const user = await User.findById(userId)
     user.password = undefined
 
     return user
