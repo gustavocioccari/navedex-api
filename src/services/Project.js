@@ -68,12 +68,19 @@ const Project = {
 
     await connection('navers_projects').insert(naverProject)
     const project = await Project.findById(id,user_id)
+
+    if (!project)
+      return false
       
     return project
   },
 
   getNavers: async function(id,user_id){
-    const project = await connection('projects').where({ id }).andWhere({ user_id })
+    const project = await connection('projects').where({ id }).andWhere({ user_id }).first()
+
+    if (!project)
+      return false
+
     const navers = await connection
                             .select('navers.id','navers.name','navers.birthdate','navers.admissiondate','navers.job_role')
                             .from('navers')

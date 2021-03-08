@@ -36,7 +36,9 @@ module.exports = {
       const projectupdate = await Project.updateById(id,req.body,user_id)
       
       if (!projectupdate)
-        return res.status(400).send({ error: 'Check project id' })
+      return res.status(400).send({ 
+        error: 'Check project id, it may not exist or may not belong to logged user'
+      })
 
       return res.status(200).send(projectupdate)
     } catch (err) {
@@ -51,7 +53,9 @@ module.exports = {
     
     try {
       if (!await Project.deleteById(id,user_id))
-        return res.status(400).send({ error: 'Check project id' })
+        return res.status(400).send({ 
+          error: 'Check naver id, it may not exist or may not belong to logged user'
+        })
 
       return res.status(200).send({message: 'project deleted'})
     } catch (err) {
@@ -65,9 +69,14 @@ module.exports = {
     const user_id = req.userId
     
     try{
-      const navers = await Project.getNavers(id,user_id)
+      const project = await Project.getNavers(id,user_id)
 
-      return res.status(200).send(navers)
+      if (!project)
+        return res.status(400).send({ 
+          error: 'Check project id, it may not exist or may not belong to logged user' 
+        })
+
+      return res.status(200).send(project)
     } catch (err) {
         return res.status(400).send({ error: 'Show project failed' }),
         console.log(err)

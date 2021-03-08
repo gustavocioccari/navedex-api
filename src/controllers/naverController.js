@@ -41,7 +41,9 @@ module.exports = {
       const naverupdate = await Naver.updateById(id,req.body,user_id)
       
       if (!naverupdate)
-        return res.status(400).send({ error: 'Check naver id' })
+        return res.status(400).send({ 
+          error: 'Check naver id, it may not exist or may not belong to logged user'
+        })
 
       return res.status(200).send(naverupdate)
     } catch (err) {
@@ -56,7 +58,9 @@ module.exports = {
     
     try {
       if (!await Naver.deleteById(id,user_id))
-        return res.status(400).send({ error: 'Check naver id' })
+        return res.status(400).send({ 
+          error: 'Check naver id, it may not exist or may not belong to logged user'
+        })
 
       return res.status(200).send({message: 'Naver deleted'})
     } catch (err) {
@@ -70,9 +74,14 @@ module.exports = {
     const user_id = req.userId
     
     try{
-      const projects = await Naver.getProjects(id,user_id)
+      const naver = await Naver.getProjects(id,user_id)
 
-      return res.status(200).send(projects)
+      if (!naver)
+        return res.status(400).send({ 
+          error: 'Check naver id, it may not exist or may not belong to logged user' 
+        })
+
+      return res.status(200).send(naver)
     } catch (err) {
         return res.status(400).send({ error: 'Show naver failed' }),
         console.log(err)

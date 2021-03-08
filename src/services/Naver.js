@@ -22,7 +22,7 @@ const Naver = {
   },
 
   create: async function(naverData){
-    const {name,birthdate,admissiondate,job_role,user_id} = naverData
+    const { name,birthdate,admissiondate,job_role,user_id } = naverData
 
     const naver = await connection('navers').insert({ name,birthdate,admissiondate,job_role,user_id }).returning('*')
     naver.user_id = undefined
@@ -37,15 +37,22 @@ const Naver = {
   },
 
   updateById: async function(id,updateData,user_id){
-    await connection('navers').update(updateData).where({ id }).andWhere({ user_id })
+    const naverupdate = await connection('navers').update(updateData).where({ id }).andWhere({ user_id }).returning('*')
     
+    if (!naverupdate)
+      return false
+
     const naver = await Naver.findById(id,user_id)
     
     return naver
   },
 
   getProjects: async function(id,user_id){
-    const naver = await connection('navers').where({ id }).andWhere({ user_id })
+    const naver = await connection('navers').where({ id }).andWhere({ user_id }).first()
+
+    if (!naver)
+      return false
+
     const projects = await connection
                             .select('projects.id','projects.name')
                             .from('projects')
