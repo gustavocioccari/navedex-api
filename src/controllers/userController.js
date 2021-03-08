@@ -4,16 +4,19 @@ const Auth = require('../services/Auth')
 module.exports = {
 
   async create(req,res){
+    const { email, password } = req.body
     try{
-      const user = await User.create(req.body)
+      const user = await User.findByEmail(email)
 
-      if (!user)
+      if (user)
         return res.status(400).send({ error: 'User already exists' })
 
-      const token = Auth.generateToken({ id:user.id })
+      const usercreated = await User.create({ email, password })
+
+      const token = Auth.generateToken({ id:usercreated.id })
 
       return res.send({
-        user,
+        email,
         token:token
       })
     } catch(err){

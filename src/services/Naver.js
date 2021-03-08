@@ -24,12 +24,9 @@ const Naver = {
   create: async function(naverData){
     const {name,birthdate,admissiondate,job_role,user_id} = naverData
 
-    const naverinsert = await connection('navers').insert({ name,birthdate,admissiondate,job_role,user_id })
-
-    const naverId = naverinsert[0]
-
-    const naver = await Naver.findById(naverId,user_id)
-
+    const naver = await connection('navers').insert({ name,birthdate,admissiondate,job_role,user_id }).returning('*')
+    naver.user_id = undefined
+    
     return naver
   },
 

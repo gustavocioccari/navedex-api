@@ -19,14 +19,13 @@ const Project = {
   create: async function(projectData) {
     const { name, navers, user_id } = projectData
     
-    const projectinsert = await connection('projects').insert({ name, user_id })
+    const project = await connection('projects').insert({ name, user_id }).returning('*')
 
-    const projectId = projectinsert[0]
+    const projectId = project[0].id
+    project[0].user_id = undefined
 
-    if (!navers){
-      const project = await Project.findById(projectId,user_id)
+    if (!navers)  
       return project
-    }
 
     const naverProject = navers.map((naverId) => {
       return {
@@ -37,9 +36,10 @@ const Project = {
 
     await connection('navers_projects').insert(naverProject)
     
-    const project = await Project.findById(projectId,user_id)
+    const projectNavers = await Project.findById(projectId,user_id)
+    projectNavers.user_id = undefined
 
-    return project
+    return projectNavers
   },
 
   deleteById: async function(id,user_id){   

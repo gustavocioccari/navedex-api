@@ -4,14 +4,16 @@ exports.up = function(knex) {
     table.increments('id')
     
     table.integer('naver_id')
-      .references('naver.id')
-      .notNullable()
-      .onDelete('CASCADE')
-
+    table.foreign('naver_id')
+          .references('id')
+          .inTable('navers')
+          .onDelete('CASCADE')
+    
     table.integer('project_id')
-      .references('project.id')
-      .notNullable()
-      .onDelete('CASCADE')
+    table.foreign('project_id')
+    .references('id')
+    .inTable('projects')
+    .onDelete('CASCADE')    
   })
 };
 

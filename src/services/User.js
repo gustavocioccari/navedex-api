@@ -11,25 +11,18 @@ const User = {
   },
 
   findByEmail: async function(email) {
-      const user = await connection('users').where({ email }).first()
+      const user = await connection('users').where({ email }).select('users.*').first()
       
       return user
   },
 
   create: async function(userData) {
     const { email, password } = userData
-
-    const userNotExists = await User.findByEmail(email)
-    
-    if (userNotExists)
-      return 
     
     const hash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
     
-    const userinsert = await connection('users').insert({email, password:hash})
-    const userId = userinsert[0]
+    const user = await connection('users').insert({email, password:hash}).returning('*')
 
-    const user = await User.findById(userId)
     user.password = undefined
 
     return user
