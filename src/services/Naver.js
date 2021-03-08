@@ -1,13 +1,13 @@
 const connection = require('../database/connection')
 
 const Naver = {
-  findById: async function(id) {
-    const naver = await connection('navers').where({ id }).first()
+  findById: async function(id,user_id) {
+    const naver = await connection('navers').where({ id }).andWhere({ user_id }).first()
       
     return naver
   },
 
-  filterBy: async function(query){
+  filterBy: async function(query,user_id){
     const navers = await connection('navers')
       .select('id',
               'name',
@@ -16,36 +16,39 @@ const Naver = {
               'job_role'
             )
       .where(query)
+      .andWhere({ user_id })
       
     return navers
   },
 
   create: async function(naverData){
-    const naverinsert = await connection('navers').insert(naverData)
+    const {name,birthdate,admissiondate,job_role,user_id} = naverData
+
+    const naverinsert = await connection('navers').insert({ name,birthdate,admissiondate,job_role,user_id })
 
     const naverId = naverinsert[0]
 
-    const naver = await Naver.findById(naverId)
+    const naver = await Naver.findById(naverId,user_id)
 
     return naver
   },
 
-  deleteById: async function(id){   
-    const naverdelete = await connection('navers').where({ id }).del()
+  deleteById: async function(id,user_id){   
+    const naverdelete = await connection('navers').where({ id }).andWhere({ user_id }).del()
 
     return naverdelete
   },
 
-  updateById: async function(id,updateData){
-    await connection('navers').update(updateData).where({ id })
+  updateById: async function(id,updateData,user_id){
+    await connection('navers').update(updateData).where({ id }).andWhere({ user_id })
     
-    const naver = await Naver.findById(id)
+    const naver = await Naver.findById(id,user_id)
     
     return naver
   },
 
-  getProjects: async function(id){
-    const naver = await connection('navers').where({ id })
+  getProjects: async function(id,user_id){
+    const naver = await connection('navers').where({ id }).andWhere({ user_id })
     const projects = await connection
                             .select('projects.id','projects.name')
                             .from('projects')

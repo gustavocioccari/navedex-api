@@ -2,8 +2,11 @@ const Project = require('../services/Project')
 
 module.exports = {
   async create(req,res) {
+    const { name, navers } = req.body
+    const user_id = req.userId
+
     try{
-      const project = await Project.create(req.body)
+      const project = await Project.create({ name,navers,user_id })
       
       return res.status(201).send(project)
     } catch(err){
@@ -13,8 +16,10 @@ module.exports = {
   },
 
   async index(req,res) {
+    const user_id = req.userId
+
     try {
-      const projects = await Project.filterBy(req.query)
+      const projects = await Project.filterBy(req.query,user_id)
 
       return res.status(200).send(projects)
     } catch (err) {
@@ -25,9 +30,10 @@ module.exports = {
 
   async update(req,res) {
     const { id } = req.params
+    const user_id = req.userId
     
     try {
-      const projectupdate = await Project.updateById(id,req.body)
+      const projectupdate = await Project.updateById(id,req.body,user_id)
       
       if (!projectupdate)
         return res.status(400).send({ error: 'Check project id' })
@@ -41,9 +47,10 @@ module.exports = {
 
   async delete(req,res) {
     const { id } = req.params
+    const user_id = req.userId
     
     try {
-      if (!await Project.deleteById(id))
+      if (!await Project.deleteById(id,user_id))
         return res.status(400).send({ error: 'Check project id' })
 
       return res.status(200).send({message: 'project deleted'})
@@ -55,9 +62,10 @@ module.exports = {
 
   async show(req,res) {
     const { id } = req.params
+    const user_id = req.userId
     
     try{
-      const navers = await Project.getNavers(id)
+      const navers = await Project.getNavers(id,user_id)
 
       return res.status(200).send(navers)
     } catch (err) {

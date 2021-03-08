@@ -2,8 +2,16 @@ const Naver = require('../services/Naver')
 
 module.exports = {
   async create(req,res) {
+    const {
+      name,
+      birthdate,
+      admissiondate,
+      job_role
+    } = req.body
+    const user_id = req.userId
+
     try{
-      const naver = await Naver.create(req.body)
+      const naver = await Naver.create({ name,birthdate,admissiondate,job_role,user_id })
       
       return res.status(201).send(naver)
     } catch(err){
@@ -13,8 +21,10 @@ module.exports = {
   },
 
   async index(req,res) {
+    const user_id = req.userId
+    
     try {
-      const navers = await Naver.filterBy(req.query)
+      const navers = await Naver.filterBy(req.query,user_id)
 
       return res.status(200).send(navers)
     } catch (err) {
@@ -25,9 +35,10 @@ module.exports = {
 
   async update(req,res) {
     const { id } = req.params
+    const user_id = req.userId
     
     try {
-      const naverupdate = await Naver.updateById(id,req.body)
+      const naverupdate = await Naver.updateById(id,req.body,user_id)
       
       if (!naverupdate)
         return res.status(400).send({ error: 'Check naver id' })
@@ -41,9 +52,10 @@ module.exports = {
 
   async delete(req,res) {
     const { id } = req.params
+    const user_id = req.userId
     
     try {
-      if (!await Naver.deleteById(id))
+      if (!await Naver.deleteById(id,user_id))
         return res.status(400).send({ error: 'Check naver id' })
 
       return res.status(200).send({message: 'Naver deleted'})
@@ -55,9 +67,10 @@ module.exports = {
 
   async show(req,res) {
     const { id } = req.params
+    const user_id = req.userId
     
     try{
-      const projects = await Naver.getProjects(id)
+      const projects = await Naver.getProjects(id,user_id)
 
       return res.status(200).send(projects)
     } catch (err) {
