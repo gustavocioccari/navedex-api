@@ -1,0 +1,8 @@
+# DB Creds
+USER=
+HOST=
+DATABASE=
+PASSWORD=
+
+# Server port
+PORT=

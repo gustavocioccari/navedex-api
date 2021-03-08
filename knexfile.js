@@ -1,16 +1,19 @@
 // Update with your config settings.
+const { DATABASE, HOST, USER, PASSWORD } = require('./src/Config/envConfig')
 
 module.exports = {
-
   development: {
-    client: 'sqlite3',
+    client: 'postgres',
     connection: {
-      filename: './src/database/db.sqlite'
+      database: DATABASE,
+      host: HOST,
+      user: USER,
+      password: PASSWORD
     },
     migrations: {
-      directory:'./src/database/migrations'
+      directory: './src/database/migrations',
     },
-    useNullAsDefault:true
+    useNullAsDefault: true,
   },
 
   staging: {
