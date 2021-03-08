@@ -12,9 +12,9 @@ module.exports = {
       if (!user)
         return res.status(400).send({ error: 'Email not registered' })
 
-      const invalidPassword = await User.verifyPassword(email,password)
+      const isValidPassword = await User.verifyPassword(user,password)
       
-      if (!invalidPassword)
+      if (!isValidPassword)
         return res.status(400).send({ error: 'Invalid password' })
       
       user.password = undefined

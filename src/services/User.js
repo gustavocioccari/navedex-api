@@ -35,18 +35,10 @@ const User = {
     return user
   },
   
-  verifyPassword: async function(email, givenPassword) {
-    const user = await User.findByEmail(email)
+  verifyPassword: async function(user,givenPassword) { 
+    const isValidPassword = await bcrypt.compare(givenPassword, user.password)
     
-    if (!user)
-      return { error: 'User not found' }
-    
-    if (!await bcrypt.compare(givenPassword, user.password)) 
-      return false
-
-    user.password=undefined
-
-    return user
+    return isValidPassword
   },
 }
 
