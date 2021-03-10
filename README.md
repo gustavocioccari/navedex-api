@@ -56,6 +56,8 @@ npm start
 ---
 - I tried to implement tests using jest but I'm not very experienced with it and I'm still learning how to properly use and configure it so I couldn't implement that on time until dealine.
 
+- I tried to handle errors to each situation but I wish I could have done it better, in a more specific way to each posible mistake made by who would interact with the API. I think that implementing tests would help dealing with it.
+
 - Besides that I had some difficulties with the relationships between navers and projects but I think I could implement it well.
 ---
 ## Conclusion
